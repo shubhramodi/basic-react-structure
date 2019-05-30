@@ -4,8 +4,8 @@ import {applyMiddleware, createStore} from 'redux';
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
 
-import './index.css';
-import App from './App';
+import './styles/index.css';
+import App from './containers/App';
 import * as serviceWorker from './serviceWorker';
 import makeCombineReducers from "./reducers/index";
 

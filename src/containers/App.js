@@ -1,6 +1,6 @@
 import React from 'react';
-import './App.css';
-import Persons from './containers/Persons';
+import '../styles/App.css';
+import Persons from './../containers/Persons';
 
 
 function App() {
