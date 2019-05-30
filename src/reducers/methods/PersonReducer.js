@@ -14,21 +14,21 @@ const personReducer = (state = initialState, action) => {
             console.log("Person Reducer -> PERSON_ADD");
             console.log("Person Reducer -> PERSON_ADD -> " + action.payload.status);
             console.log("Person Reducer -> PERSON_ADD -> " + action.payload.message);
-            initialState.status = action.payload.status;
-            initialState.message = action.payload.message;
             return {
                 ...state,
-                loading: true
+                loading: true,
+                status: action.payload.status,
+                message: action.payload.message
             };
         case PERSON_DELETE:
             console.log("Person Reducer -> PERSON_DELETE");
             console.log("Person Reducer -> PERSON_DELETE -> " + action.payload.status);
             console.log("Person Reducer -> PERSON_DELETE -> " + action.payload.message);
-            initialState.status = action.payload.status;
-            initialState.message = action.payload.message;
             return {
                 ...state,
-                loading: true
+                loading: false,
+                status: action.payload.status,
+                // message: action.payload.message
             };
         default:
             return state;
