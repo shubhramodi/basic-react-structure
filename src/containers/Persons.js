@@ -1,18 +1,96 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
-import {getPersonList, getPersonListNew} from '../actions/index';
+import {addPerson, deletePerson, updatePerson} from '../actions/index';
 import Aux from '../hoc/Aux';
+import Person from '../components/Person';
 
 class Persons extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            person: {
+                id: 3, name: "Test", age: 1, valid: false
+            },
+
+            showPerson: true
+        }
+    }
+
+    nameChangeHandler = (event) => {
+        const person = this.state.person;
+        let personValue = event.target.value;
+        let persons = personValue.split("-");
+
+        const {personReducer} = this.props;
+        const data = personReducer.data;
+
+        const personIndex = data.findIndex(p => {
+                return p.id === +persons[0];
+            }
+        );
+
+        person.id = persons[0];
+        person.name = persons[1];
+        person.age = persons[2];
+        if (personIndex === -1) {
+            person.valid = true;
+            this.setState({person: person});
+        }
+    };
+
     render() {
+
+        let person = null;
+        let addButton = null;
+        const {personReducer} = this.props;
+        const data = personReducer.data;
+
+        if (this.state.showPerson) {
+            person = (
+                <Aux>
+                    {
+                        data.map((person, index) => {
+                            return <Person
+                                name={person.name}
+                                age={person.age}
+                                key={person.id}
+                                click={() => this.props.deletePerson(index)}
+                                change={(event) => this.props.updatePerson(event, person.id)}
+                            />
+                        })
+                    }
+                </Aux>
+            );
+        }
+
+        if (this.state.person.valid) {
+            addButton = (
+                <Aux>
+                    <button onClick={() => this.props.addPerson(this.state.person)}>Add Person</button>
+                </Aux>
+            );
+        }
+
+        let currentPersonState = (this.state.person.id ? this.state.person.id : "1") + "-"
+            + (this.state.person.name ? this.state.person.name : "Test") + "-"
+            + (this.state.person.age ? this.state.person.age : "1");
+
         return (
             <Aux>
-                <button onClick={() => this.props.getPersonList({})}>Add Person</button>
-                <button onClick={() => this.props.getPersonListNew({})}>Delete Person</button>
-                Hello
-                <h1>{console.log(this.props.personReducer)}</h1>
+
+                <Person
+                    name={this.state.person.name}
+                    age={this.state.person.age}
+                    key={this.state.person.id}
+                />
+                <p>{addButton}</p>
+                <input type="text" onChange={(event) => this.nameChangeHandler(event)}
+                       value={currentPersonState}/>
+                <p>{personReducer.message}</p>
+                <div>{person}</div>
             </Aux>
         );
     }
@@ -23,7 +101,7 @@ function mapStateToProps({personReducer}) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({getPersonList, getPersonListNew}, dispatch);
+    return bindActionCreators({addPerson, deletePerson, updatePerson}, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Persons);
