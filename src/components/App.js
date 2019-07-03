@@ -1,14 +1,15 @@
 import React from 'react';
 import '../styles/App.css';
 import Persons from './../containers/Persons';
-
+import Aux from '../hoc/Aux';
+import WithClass from '../hoc/WithClass';
 
 function App() {
     return (
-        <div className="App">
+        <Aux>
             <Persons/>
-        </div>
+        </Aux>
     );
 }
 
-export default App;
+export default WithClass(App, "App");
