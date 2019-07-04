@@ -12,7 +12,7 @@ class Persons extends Component {
 
         this.state = {
             person: {
-                id: 3, name: "Test", age: 1, valid: false
+                name: "Test", age: 1, valid: false
             },
 
             showPerson: true
@@ -26,19 +26,13 @@ class Persons extends Component {
 
         const {personReducer} = this.props;
         const data = personReducer.data;
+        const personIds = data.map(p => p.id);
 
-        const personIndex = data.findIndex(p => {
-                return p.id === +persons[0];
-            }
-        );
-
-        person.id = persons[0];
-        person.name = persons[1];
-        person.age = persons[2];
-        if (personIndex === -1) {
-            person.valid = true;
-            this.setState({person: person});
-        }
+        person.id = Math.max.apply(null, personIds) + 1;
+        person.name = persons[0];
+        person.age = persons[1];
+        person.valid = true;
+        this.setState({person: person});
     };
 
     render() {
@@ -74,9 +68,7 @@ class Persons extends Component {
             );
         }
 
-        let currentPersonState = (this.state.person.id ? this.state.person.id : "1") + "-"
-            + (this.state.person.name ? this.state.person.name : "Test") + "-"
-            + (this.state.person.age ? this.state.person.age : "1");
+        let currentPersonState = (this.state.person.name) + "-" + (this.state.person.age);
 
         return (
             <Aux>
