@@ -3,10 +3,7 @@ import {PERSON_ADD, PERSON_DELETE, PERSON_UPDATE} from '../../actions/index';
 const initialState = {
     status: true,
     message: "",
-    data: [
-        {id: 1, name: "Prashant", age: 26},
-        {id: 2, name: "Aman", age: 27}
-    ],
+    data: [],
     loading: false,
     error: ""
 };
@@ -18,7 +15,9 @@ const personReducer = (state = initialState, action) => {
             console.log("Person Reducer -> PERSON_ADD");
             console.log("Person Reducer -> PERSON_ADD -> " + action.payload.status);
             console.log("Person Reducer -> PERSON_ADD -> " + action.payload.message);
-
+            let maxId = state.data.map(it => it.id)
+                .reduce((previousValue = 0, currentValue) => previousValue > currentValue ? previousValue : currentValue, 0);
+            action.payload.data.id = (maxId + 1);
             let newData = [...state.data];
             newData.push(action.payload.data);
 

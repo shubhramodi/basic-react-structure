@@ -11,37 +11,41 @@ class Persons extends Component {
         super(props);
 
         this.state = {
-            person: {
-                name: "Test", age: 1, valid: false
-            },
-
-            showPerson: true
+            personName: '',
+            showPerson: true,
         }
     }
 
-    nameChangeHandler = (event) => {
-        const person = this.state.person;
-        let personValue = event.target.value;
-        let persons = personValue.split("-");
+    inpuTextChangeHandler = (event) => {
+        let value = event.target.value;
+        let name = event.target.name;
+        let newState = {...this.state};
+        newState[`${name}`] = value;
+        this.setState(newState);
+    };
 
-        const {personReducer} = this.props;
-        const data = personReducer.data;
-        const personIds = data.map(p => p.id);
-
-        person.id = Math.max.apply(null, personIds) + 1;
-        person.name = persons[0];
-        person.age = persons[1];
-        person.valid = true;
-        this.setState({person: person});
+    addPerson = () => {
+        let dataArr = this.state.personName.split("-");
+        if (dataArr.length === 2) {
+            let person = {name: dataArr[0], age: +dataArr[1]};
+            this.props.addPerson(person);
+        }
+        else {
+            alert("invalid data");
+        }
     };
 
     render() {
 
         let person = null;
-        let addButton = null;
         const {personReducer} = this.props;
         const data = personReducer.data;
-
+        let dataArr = this.state.personName.split("-");
+        let currentPerson = null;
+        if (dataArr.length === 2) {
+            let p = {name: dataArr[0], age: +dataArr[1]};
+            currentPerson = <Person name={p.name} age={p.age}/>
+        }
         if (this.state.showPerson) {
             person = (
                 <Aux>
@@ -60,27 +64,18 @@ class Persons extends Component {
             );
         }
 
-        if (this.state.person.valid) {
-            addButton = (
-                <Aux>
-                    <button onClick={() => this.props.addPerson(this.state.person)}>Add Person</button>
-                </Aux>
-            );
-        }
-
-        let currentPersonState = (this.state.person.name) + "-" + (this.state.person.age);
+        let addButton = (
+            <Aux>
+                <button onClick={this.addPerson}>Add Person</button>
+            </Aux>
+        );
 
         return (
             <Aux>
-
-                <Person
-                    name={this.state.person.name}
-                    age={this.state.person.age}
-                    key={this.state.person.id}
-                />
+                {currentPerson}
                 <p>{addButton}</p>
-                <input type="text" onChange={(event) => this.nameChangeHandler(event)}
-                       value={currentPersonState}/>
+                <input type="text" onChange={(event) => this.inpuTextChangeHandler(event)}
+                       value={this.state.personName} name={'personName'}/>
                 <p>{personReducer.message}</p>
                 <div>{person}</div>
             </Aux>
