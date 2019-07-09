@@ -5,6 +5,7 @@ services:
     build:
       context: $HOME/spring-hibernate-frontend
       dockerfile: Dockerfile
+    image: spring-hibernate-frontend:latest
     volumes:
     - '$HOME/spring-hibernate-frontend:/spring-hibernate-frontend'
     - '/spring-hibernate-frontend/node_modules'
