@@ -6,7 +6,7 @@ services:
       context: $HOME/spring-hibernate-frontend
       dockerfile: Dockerfile
     volumes:
-    - '.:/spring-hibernate-frontend'
+    - '$HOME/spring-hibernate-frontend:/spring-hibernate-frontend'
     - '/spring-hibernate-frontend/node_modules'
     ports:
     - 3000:3000
