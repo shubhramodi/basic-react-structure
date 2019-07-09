@@ -1,14 +1,19 @@
 version: '3.3'
 services:
-  sample:
-    container_name: sample
+  spring-hibernate-frontend:
+    container_name: spring-hibernate-frontend
     build:
-      context: .
+      context: $HOME/spring-hibernate-frontend
       dockerfile: Dockerfile
     volumes:
-      - '.:/app'
-      - '/app/node_modules'
+    - '.:/spring-hibernate-frontend'
+    - '/spring-hibernate-frontend/node_modules'
     ports:
-      - '3001:3000'
+    - 3000:3000
     environment:
-      - NODE_ENV=development
+    - NODE_ENV=production
+    networks:
+    - spring-hibernate-network
+    depends_on:
+    - spring-hibernate-backend
+    restart: always
