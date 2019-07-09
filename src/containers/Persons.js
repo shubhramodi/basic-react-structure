@@ -66,7 +66,7 @@ class Persons extends Component {
 
         let addButton = (
             <Aux>
-                <button onClick={this.addPerson}>Add Person New</button>
+                <button onClick={this.addPerson}>Add Person</button>
             </Aux>
         );
 
